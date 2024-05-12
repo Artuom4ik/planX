@@ -1,0 +1,43 @@
+import requests
+from bs4 import BeautifulSoup
+from django.contrib.auth.models import User
+from rest_framework import serializers
+
+from .models import Link
+
+
+class LinkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Link
+        fields = ['url']
+
+    def create(self, validated_data):
+        url = validated_data.get('url')
+
+        response = requests.get(url)
+        response.raise_for_status()
+
+        soup = BeautifulSoup(response.content, "lxml")
+
+        fields = {"og:title":"", "og:description":"", "og:image":"", "og:type": ""}
+
+        for field in fields:
+            if soup.find("meta", property=field):
+                fields[field] = soup.find("meta", property=field)['content']
+
+        if not fields['og:title']:
+            fields['og:title'] = soup.title
+
+        if not fields["og:description"]:
+            fields["og:description"] = soup.find('meta', name='description')['content']
+
+        link = Link.objects.get_or_create(
+            title=fields["og:title"],
+            short_description=fields["og:description"],
+            link=url,
+            image=fields["og:image"],
+            link_type=fields["og:type"],
+            user=self.request.user
+        )
+
+        return link
