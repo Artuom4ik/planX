@@ -9,12 +9,11 @@ class Collection(models.Model):
     short_description = models.TextField("Краткое описание", max_length=200, blank=True)
     created_at = models.DateTimeField(default=timezone.now, verbose_name="Дата создания")
     update_at = models.DateTimeField(null=True, blank=True, verbose_name="Дата изменения")
-    link = models.ForeignKey(
+    links = models.ManyToManyField(
         Link,
-        on_delete=models.CASCADE,
         related_name="collections",
-        verbose_name="Ссылка"
+        verbose_name="Ссылки"
     )
 
     def __str__(self):
-        return f"{self.name, self.link}"
+        return self.name
