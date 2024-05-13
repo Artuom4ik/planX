@@ -11,7 +11,8 @@ class CollectionsViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def create(self, request):
-        serializer = CollectionSerializer(data=request.data)
+        serializer = CollectionSerializer(
+            data=request.data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
