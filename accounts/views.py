@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login, logout
 from django.http import Http404
 from rest_framework import status, viewsets
 from rest_framework.authtoken.models import Token
@@ -14,10 +14,12 @@ class AuthViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['post'])
     def register(self, request):
         serializer = UserSerializer(data=request.data)
+
         if serializer.is_valid():
             user = serializer.save()
             refresh = RefreshToken.for_user(user)
             return Response({'refresh': str(refresh), 'access': str(refresh.access_token)})
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=False, methods=['post'])
@@ -25,11 +27,16 @@ class AuthViewSet(viewsets.ViewSet):
         username = request.data.get('email')
         password = request.data.get('password')
         user = authenticate(username=username, password=password)
-        
+
         if user:
             Token.objects.get_or_create(user=user)
+            login(request, user)
             refresh = RefreshToken.for_user(user)
-            return Response({'refresh': str(refresh), 'access': str(refresh.access_token)})
+            return Response({
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+                'user': request.user.username})
+
         else:
             return Response({'error': 'Некорректные данные. Проверьте логин и пароль'},
                             status=status.HTTP_400_BAD_REQUEST)
@@ -38,7 +45,9 @@ class AuthViewSet(viewsets.ViewSet):
     def logout(self, request):
         try:
             request.user.auth_token.delete()
+            logout(request, request.user)
             return Response({'message': 'Successfully logged out'}, status=status.HTTP_200_OK)
+
         except Exception:
             return Response({'message': 'UNAUTHORIZED'}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -48,6 +57,7 @@ class AuthViewSet(viewsets.ViewSet):
             old_password = request.data.get('old_password')
             new_password = request.data.get('new_password')
             return {"old_password": old_password, "new_password": new_password}
+
         except Exception:
             raise Http404
 
@@ -66,5 +76,6 @@ class AuthViewSet(viewsets.ViewSet):
             user.save()
 
             return Response({'message': 'Password successfully changed'}, status=status.HTTP_200_OK)
+
         except Exception:
             return Response({'error': 'UNAUTHORIZED'}, status=status.HTTP_401_UNAUTHORIZED)
