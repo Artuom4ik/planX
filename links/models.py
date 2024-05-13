@@ -23,9 +23,12 @@ class Link(models.Model):
         default="website",
         verbose_name="Тип ссылки"
     )
-    created_at = models.DateTimeField(default=timezone.now, verbose_name="Дата создания")
-    update_at = models.DateTimeField(null=True, blank=True, verbose_name="Дата изменения")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="links")
+    created_at = models.DateTimeField(
+        default=timezone.now, verbose_name="Дата создания")
+    update_at = models.DateTimeField(
+        null=True, blank=True, verbose_name="Дата изменения")
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="links")
 
     class Meta:
         unique_together = ['link', 'user']
