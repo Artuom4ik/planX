@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_jwt',
+    'django_rest_passwordreset',
 ]
 
 JWT_AUTH = {
