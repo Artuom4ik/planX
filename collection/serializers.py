@@ -10,7 +10,12 @@ class CollectionSerializer(serializers.ModelSerializer):
         fields = ["name", "short_description", "links"]
 
     def create(self, validated_data):
-        return Collection.objects.get_or_create(**validated_data)
+        return Collection.objects.get_or_create(
+            name=validated_data.get("name"),
+            short_description=validated_data.get("short_description"),
+            links=validated_data.get("links"),
+            user=self.context['request'].user
+        )
 
 
 class UpdateCollectionSerializer(serializers.ModelSerializer):
@@ -30,4 +35,10 @@ class UpdateCollectionSerializer(serializers.ModelSerializer):
 class ShowCollectionsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Collection
-        fields = "__all__"
+        fields = [
+            "name",
+            "short_description",
+            "created_at",
+            "update_at",
+            "links"
+        ]
