@@ -15,7 +15,7 @@ class Link(models.Model):
     title = models.CharField("Заголовок страницы", max_length=100)
     short_description = models.TextField("Краткое описание", max_length=200)
     link = models.CharField("Ссылка на страницу", max_length=100)
-    image = models.ImageField(null=True, default="", verbose_name="Изображение")
+    image = models.ImageField(default="", verbose_name="Изображение")
     link_type = models.CharField(
         max_length=100,
         choices=LINK_TYPE,
