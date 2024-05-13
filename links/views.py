@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
 from .models import Link
-from .serializator import LinkSerializer, UpdateLinkSerializer, ShowLinkSerializer
+from .serializers import LinkSerializer, UpdateLinkSerializer, ShowLinkSerializer
 
 
 class LinksViewSet(viewsets.ViewSet):
