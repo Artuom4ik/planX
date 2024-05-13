@@ -1,0 +1,11 @@
+Django==5.0.6
+Pillow==10.3.0
+gunicorn==22.0.0
+environs[django]==9.3.2
+djangorestframework==3.15.1
+djangorestframework-jwt==1.11.0
+djangorestframework-simplejwt==5.3.1
+drf-yasg==1.21.7
+beautifulsoup4==4.12.3
+lxml==5.2.1
+requests==2.31.0
