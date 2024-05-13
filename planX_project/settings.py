@@ -45,8 +45,10 @@ INSTALLED_APPS = [
 JWT_AUTH = {
     'JWT_SECRET_KEY': 'your-secret-key',
     'JWT_ALGORITHM': 'HS256',
-    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=15),  # Время жизни токена доступа (15 минут)
-    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=1),  # Время жизни токена обновления (1 день)
+    # Время жизни токена доступа (15 минут)
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=15),
+    # Время жизни токена обновления (1 день)
+    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=1),
 }
 
 MIDDLEWARE = [
@@ -135,6 +137,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
