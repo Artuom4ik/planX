@@ -38,11 +38,7 @@ class LinksViewSet(viewsets.ViewSet):
         if not pk:
             return Response({"error": "Method PUT not allowed"})
 
-        try:
-            instance = Link.objects.get(pk=pk)
-
-        except:
-            return Response({"error": "Object does not exists"})
+        instance = get_object_or_404(Link, pk=pk)
 
         serializer = UpdateLinkSerializer(data=request.data, instance=instance)
         serializer.is_valid(raise_exception=True)

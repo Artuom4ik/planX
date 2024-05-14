@@ -1,7 +1,7 @@
 from rest_framework import status, viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
-from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import get_object_or_404
 
 from .models import Collection
 from .serializers import *
@@ -34,11 +34,7 @@ class CollectionsViewSet(viewsets.ViewSet):
         if not pk:
             return Response({"error": "Method PUT not allowed"})
 
-        try:
-            instance = Collection.objects.get(pk=pk)
-
-        except Collection.DoesNotExist:
-            return Response({"error": "Object does not exists"})
+        instance = Collection.objects.get(pk=pk)
 
         serializer = UpdateCollectionSerializer(
             data=request.data,
