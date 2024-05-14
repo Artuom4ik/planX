@@ -38,16 +38,18 @@ class LinkSerializer(serializers.ModelSerializer):
             fields["og:description"] = soup.find(
                 'meta', name='description')['content']
 
-        link = Link.objects.create(
-            title=fields["og:title"],
-            short_description=fields["og:description"],
+        return Link.objects.get_or_create(
             link=url,
-            image=fields["og:image"],
-            link_type=fields["og:type"],
-            user=self.context['request'].user
+            user=self.context['request'].user,
+            defaults={
+                "title": fields["og:title"],
+                "short_description": fields["og:description"],
+                "image": fields["og:image"],
+                "link_type": fields["og:type"],
+
+            }
         )
 
-        return link
 
 
 class UpdateLinkSerializer(serializers.ModelSerializer):

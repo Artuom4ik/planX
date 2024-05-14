@@ -17,7 +17,11 @@ class LinksViewSet(viewsets.ViewSet):
         )
 
         if serializer.is_valid():
-            serializer.save()
+            link, created = serializer.save()
+
+            if not created:
+                return Response({"error": "Object already exists"})
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

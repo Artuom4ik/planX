@@ -10,11 +10,13 @@ class CollectionSerializer(serializers.ModelSerializer):
         fields = ["name", "short_description", "links"]
 
     def create(self, validated_data):
-        return Collection.objects.create(
+        return Collection.objects.get_or_create(
             name=validated_data.get("name"),
-            short_description=validated_data.get("short_description"),
-            links=validated_data.get("links"),
-            user=self.context['request'].user
+            user=self.context['request'].user,
+            defaults={
+                "short_description": validated_data.get("short_description"),
+                "links": validated_data.get("links")
+            }
         )
 
 
