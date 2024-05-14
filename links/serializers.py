@@ -38,7 +38,7 @@ class LinkSerializer(serializers.ModelSerializer):
             fields["og:description"] = soup.find(
                 'meta', name='description')['content']
 
-        link = Link.objects.get_or_create(
+        link = Link.objects.create(
             title=fields["og:title"],
             short_description=fields["og:description"],
             link=url,

@@ -10,7 +10,7 @@ class CollectionSerializer(serializers.ModelSerializer):
         fields = ["name", "short_description", "links"]
 
     def create(self, validated_data):
-        return Collection.objects.get_or_create(
+        return Collection.objects.create(
             name=validated_data.get("name"),
             short_description=validated_data.get("short_description"),
             links=validated_data.get("links"),
