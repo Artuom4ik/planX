@@ -7,8 +7,8 @@ urlpatterns = [
         'post': 'create'
     }), name='link-list'),
     path('<int:pk>/', CollectionsViewSet.as_view({
-        'get': 'retrieve',
+        'get': 'get_collection',
         'put': 'update',
-        'delete': 'destroy'
+        'delete': 'delete'
     }), name='link-detail'),
 ]

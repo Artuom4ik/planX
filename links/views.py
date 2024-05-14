@@ -22,7 +22,7 @@ class LinksViewSet(viewsets.ViewSet):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def retrieve(self, request, pk=None):
+    def get_link(self, request, pk=None):
         if not pk:
             return Response({"error": "Method GET not allowed"})
 
@@ -46,7 +46,7 @@ class LinksViewSet(viewsets.ViewSet):
 
         return Response({"link": serializer.data})
 
-    def destroy(self, request, pk=None):
+    def delete(self, request, pk=None):
         if not pk:
             return Response({"error": "Method DELETE not allowed"})
 

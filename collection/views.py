@@ -18,7 +18,7 @@ class CollectionsViewSet(viewsets.ViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def retrieve(self, request, pk=None):
+    def get_collection(self, request, pk=None):
         if not pk:
             return Response({"error": "Method GET not allowed"})
 
@@ -34,7 +34,7 @@ class CollectionsViewSet(viewsets.ViewSet):
         if not pk:
             return Response({"error": "Method PUT not allowed"})
 
-        instance = Collection.objects.get(pk=pk)
+        instance = get_object_or_404(Collection, pk=pk)
 
         serializer = UpdateCollectionSerializer(
             data=request.data,
@@ -45,7 +45,7 @@ class CollectionsViewSet(viewsets.ViewSet):
 
         return Response({"link": serializer.data})
 
-    def destroy(self, request, pk=None):
+    def delete(self, request, pk=None):
         if not pk:
             return Response({"error": "Method DELETE not allowed"})
 
